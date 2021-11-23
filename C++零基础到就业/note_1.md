@@ -287,7 +287,7 @@ cin.get(ch);  // 从缓冲区取走一个字符
 if(ch >= '0' && ch <= '9')
 {
   /** 将字符放回缓冲区 */
-  cin.peek(ch);
+  cin.putback(ch);
   int num;
   cin >> num;
   cout << "你输入的是一个数字: " << num << endl;
@@ -295,7 +295,7 @@ if(ch >= '0' && ch <= '9')
 }else
 {
   /** 将字符放回缓冲区 */
-  cin.peek(ch);
+  cin.putback(ch);
   char buf[256];
   cin >> buf;
   cout << "你输入的是一个字符串" << buf << endl;
