@@ -269,6 +269,8 @@ swap(vec);
   std::for_each(vec_1.begin(), vec_1.end(), printValue);
   std::for_each(vec_2.begin(), vec_2.end(), printValue);
 ```
+
+#### **从属名称**
 ```c++
 Dependent names  // 从属名称
 
@@ -281,4 +283,145 @@ void prinVec(const std::vector<T>& vec){
   }
   std::cout << std::endl;
 }
+```
+
+#### **vector的大小操作**
+```c++
+/** 返回容器中元素的个数 */
+size()
+
+/** 判断容器是否为空 bool类型*/
+empty()
+
+/** 重新指定容器元素个数，容器变短删除多余元素，容器变长补默认值*/
+resize(int num)
+
+/** 用elem填充 */
+resize(int num, elem)
+
+/** 容器的容量 */
+capacity()
+
+/** T*len 如果大于当前capacity，则将capacity增加到T*len
+    小于则不变。
+ */
+reserve(int len)
+
+
+reserve增加了vector的capacity，但是它的size没有改变！
+reserve只能变大capacity，不能减小capacity。
+
+resize改变了vector的capacity同时也增加了它的size！
+```
+
+
+#### **vector 数据存取操作**
+```c++
+/** 返回索引处的数据，越界抛出异常 */
+at(int idx)
+
+/** 返回索引处的数据引用，越界程序出错 */
+operator[]
+
+/** 返回容器中第一个数据元素 */
+front()
+
+/** 返回容器中最后一个元素 */
+back()
+```
+
+
+#### **vector 插入和删除操作**
+```c++
+/** 迭代器指向位置pos插入count个元素elem */
+insert(const_iterator pos, int count, elem)
+
+/** 在pos位置插入elem */
+insert(const_iterator pos, elem)
+
+/** 插入一个范围的元素 使用数组地址也可以 */
+template <class 模版迭代器>
+void insert (vector的迭代器 pos, 模版迭代器 first, 模版迭代器 last);
+
+/** 尾部插入元素elem */
+push_back(elem)
+
+
+
+/** ----------------------------------------------- */
+/** ----------------------------------------------- */
+
+
+/** 删除最后一个元素 */
+pop_back()
+
+/** 删除迭代器从start到end之间的元素 */
+erase(const_iterator start, const_iterator end)
+
+/** 删除迭代器指向的元素 */
+erase(const_iterator pos)
+
+/** 删除容器中所有元素 */
+clear()
+```
+
+#### **巧用swap 收缩vector空间**
+```c++
+/** 一般支持数组下标的，都支持随机访问 */
+vec.insert(vec.bengin() + 2, elem);
+
+1.匿名对象用完就会析构。
+2.vector默认的capacity为0。
+
+/** 巧用匿名对象加swap 收缩空间 */
+  
+  char arr[] = "HelloWorld";
+  // size 11, capacity 11
+  vector<char> vec_1(arr , arr + sizeof(arr) / sizeof(char));
+  
+
+  /** 将空间个数，增加到2000 */
+  // size 11, capacity 2000
+  vec_1.reserve(2000);
+  
+  
+  /** 用匿名对象的swap方法，回缩空间 */
+  // size 11, capacity 11
+  vector<char>(vec_1).swap(vec_1);
+```
+
+```c++
+1.如果知道容器大概需要的空间，可以使用reverse预先开辟大概的空间，可以减少容器分配空间，释放空间，拷贝数据的次数。
+
+  vector<char> vec_1;
+  char* ptr = nullptr;
+  int count = 0;
+
+  for (int i = 0; i < 100000; ++i) {
+	vec_1.push_back('a');
+
+	if (ptr != &(vec_1[0])){
+	  ptr = &(vec_1[0]);
+	  count++;
+	}
+  }
+  //分配空间的次数是18
+
+
+
+  vector<char> vec_2;
+  count = 0;
+  ptr = nullptr;
+
+  /** 预分配了50000个空间 */
+  vec_2.reserve(50000);
+  for (int i = 0; i < 100000; ++i) {
+	vec_2.push_back('a');
+	if (ptr != &(vec_2[0])){
+	  count++;
+	  ptr = &(vec_2[0]);
+	}
+  }
+  //分配空间的次数是2
+
 ```
